@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matheus Vidic — Editor de Vídeo Freelancer</title>
+  <meta name="description" content="Matheus Vidic, editor de vídeo freelancer especialista em Reels, Motion Tracking, Texto 3D e Color Grading. Transformo gravações brutas em vídeos que vendem." />
+  <meta property="og:title" content="Matheus Vidic — Editor de Vídeo Freelancer" />
+  <meta property="og:description" content="Edição de vídeo profissional: Reels, Institucional, Motion Tracking, Texto 3D, Color Grading." />
+  <meta property="og:image" content="og-image.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://matheusvidic.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SVG filter para noise texture -->
+  <svg style="display:none" aria-hidden="true">
+    <defs>
+      <filter id="noise-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+        <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+        <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Custom Cursor (desktop only) -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Navegação principal">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo" aria-label="Início">MV<span class="accent">.</span></a>
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#sobre" class="nav-link">Sobre</a></li>
+        <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+        <li><a href="#servicos" class="nav-link">Serviços</a></li>
+        <li><a href="#processo" class="nav-link">Processo</a></li>
+        <li><a href="#depoimentos" class="nav-link">Depoimentos</a></li>
+        <!-- Substitua XXXXXXXXXXX pelo seu número DDD + número (ex: 5547999999999) -->
+        <li><a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="nav-cta">WhatsApp</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+    <button class="drawer-close" id="drawerClose" aria-label="Fechar menu">✕</button>
+    <ul class="drawer-links" role="list">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#portfolio">Portfólio</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#processo">Processo</a></li>
+      <li><a href="#depoimentos">Depoimentos</a></li>
+      <!-- Substitua o número do WhatsApp abaixo -->
+      <li><a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="drawer-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a></li>
+    </ul>
+  </div>
+
+  <main>
+
+    <!-- ===== 1. HERO ===== -->
+    <section id="hero" class="hero" aria-label="Apresentação">
+      <div class="hero-noise" aria-hidden="true"></div>
+      <div class="hero-gradient" id="heroGradient" aria-hidden="true"></div>
+      <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
+
+      <div class="hero-content">
+        <p class="hero-label reveal-up">Editor de Vídeo Freelancer</p>
+        <h1 class="hero-title reveal-up">
+          Matheus<br /><span class="accent">Vidic</span>
+        </h1>
+        <div class="hero-typewriter reveal-up" aria-live="polite" aria-atomic="true">
+          <span class="typewriter-text" id="typewriterText"></span><span class="typewriter-cursor" aria-hidden="true">|</span>
+        </div>
+        <div class="hero-ctas reveal-up">
+          <a href="#portfolio" class="btn btn-outline">Ver meus trabalhos</a>
+          <!-- Substitua o número do WhatsApp abaixo -->
+          <a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Falar no WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ===== 2. POR QUE EDIÇÃO IMPORTA ===== -->
+    <section id="impacto" class="impacto" aria-labelledby="impacto-title">
+      <div class="impacto-border-left" aria-hidden="true"></div>
+      <div class="container">
+        <div class="impacto-header">
+          <h2 class="section-title reveal-up" id="impacto-title">
+            "Vídeo ruim destrói negócio.<br />Mesmo com produto bom."
+          </h2>
+          <p class="section-subtitle reveal-up">
+            O cliente não compra o produto. Ele compra a percepção<br class="br-desktop" />
+            que o vídeo cria sobre ele.
+          </p>
+        </div>
+
+        <div class="impacto-grid">
+          <div class="impacto-card reveal-up" style="--delay:0">
+            <span class="impacto-number accent" data-target="0.05" data-suffix="s" data-decimals="2">0,05s</span>
+            <p class="impacto-desc">tempo que o cérebro leva para julgar a qualidade de um vídeo</p>
+          </div>
+          <div class="impacto-card reveal-up" style="--delay:1">
+            <span class="impacto-number accent" data-target="3" data-suffix="×">3×</span>
+            <p class="impacto-desc">mais tempo assistindo vídeos bem editados vs. amadores</p>
+          </div>
+          <div class="impacto-card reveal-up" style="--delay:2">
+            <span class="impacto-number accent" data-target="87" data-suffix="%">87%</span>
+            <p class="impacto-desc">aumento na percepção de valor de um produto com vídeo profissional</p>
+          </div>
+          <div class="impacto-card reveal-up" style="--delay:3">
+            <span class="impacto-number accent">1</span>
+            <p class="impacto-desc">chance — você tem uma tentativa de causar boa impressão. Não desperdice.</p>
+          </div>
+        </div>
+
+        <p class="impacto-closing reveal-up">
+          <em>"Quem parece profissional cobra mais. Vende mais. Cresce mais."</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 3. SOBRE ===== -->
+    <section id="sobre" class="sobre" aria-labelledby="sobre-title">
+      <div class="container">
+        <div class="sobre-grid">
+          <div class="sobre-photo reveal-up">
+            <div class="photo-wrapper">
+              <!--
+                FOTO: Substitua o conteúdo dentro de .photo-placeholder por:
+                <img src="sua-foto.jpg" alt="Matheus Vidic — Editor de Vídeo" />
+              -->
+              <div class="photo-placeholder" aria-label="Espaço para foto de perfil">
+                <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <p>Adicione sua foto aqui</p>
+              </div>
+              <div class="photo-ring" aria-hidden="true"></div>
+              <div class="photo-ring photo-ring-2" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="sobre-content">
+            <p class="section-label reveal-up">Sobre mim</p>
+            <h2 class="section-title reveal-up" id="sobre-title">
+              Transformo gravações brutas<br />em vídeos que <span class="accent">vendem.</span>
+            </h2>
+            <p class="sobre-text reveal-up">
+              Não edito só pra ficar bonito — edito pra converter. Cada corte, cada trilha,
+              cada efeito tem um propósito: fazer seu público parar de rolar e prestar atenção.
+            </p>
+            <p class="sobre-text reveal-up">
+              Trabalho com marcas e criadores de conteúdo que entendem que
+              <strong>vídeo profissional não é gasto — é investimento.</strong>
+            </p>
+
+            <div class="sobre-stats">
+              <div class="stat-item reveal-up">
+                <span class="stat-number accent" data-target="50" data-suffix="+">0</span>
+                <span class="stat-label">vídeos editados</span>
+              </div>
+              <div class="stat-item reveal-up">
+                <span class="stat-number accent" data-target="3" data-suffix="×">0</span>
+                <span class="stat-label">mais retenção</span>
+              </div>
+              <div class="stat-item reveal-up">
+                <span class="stat-icon" aria-hidden="true">⚡</span>
+                <span class="stat-label">Entrega rápida</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. PORTFÓLIO ===== -->
+    <section id="portfolio" class="portfolio" aria-labelledby="portfolio-title">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label reveal-up">Portfólio</p>
+          <h2 class="section-title reveal-up" id="portfolio-title">
+            Trabalhos <span class="accent">recentes</span>
+          </h2>
+        </div>
+
+        <div class="portfolio-filter reveal-up" role="group" aria-label="Filtrar por categoria">
+          <button class="filter-btn active" data-filter="todos">Todos</button>
+          <button class="filter-btn" data-filter="reels">Reels</button>
+          <button class="filter-btn" data-filter="institucional">Institucional</button>
+          <button class="filter-btn" data-filter="produto">Produto</button>
+        </div>
+
+        <div class="portfolio-grid" id="portfolioGrid">
+
+          <!--
+            ╔══════════════════════════════════════════════════════════════╗
+            ║  COMO SUBSTITUIR OS VÍDEOS PLACEHOLDER                      ║
+            ║                                                              ║
+            ║  1. Troque data-video-url pelo embed do seu vídeo:           ║
+            ║     YouTube → https://www.youtube.com/embed/SEU_VIDEO_ID    ║
+            ║     Vimeo   → https://player.vimeo.com/video/SEU_VIDEO_ID   ║
+            ║                                                              ║
+            ║  2. Substitua .thumb-placeholder por:                       ║
+            ║     <img src="thumb.jpg" alt="Título do vídeo"              ║
+            ║          loading="lazy" />                                   ║
+            ║                                                              ║
+            ║  3. Atualize: data-category, .card-category, .card-title    ║
+            ║     e .card-duration conforme seu vídeo real                 ║
+            ╚══════════════════════════════════════════════════════════════╝
+          -->
+
+          <article class="portfolio-card tilt-card reveal-up"
+                   data-category="reels"
+                   data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+            <div class="card-thumb">
+              <div class="thumb-placeholder" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Projeto 01</span>
+              </div>
+              <div class="card-overlay">
+                <div class="play-btn" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <span class="card-category">Reels</span>
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">Projeto 01 — Reel de Produto</h3>
+              <span class="card-duration">0:30</span>
+            </div>
+          </article>
+
+          <article class="portfolio-card tilt-card reveal-up"
+                   data-category="institucional"
+                   data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+            <div class="card-thumb">
+              <div class="thumb-placeholder" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Projeto 02</span>
+              </div>
+              <div class="card-overlay">
+                <div class="play-btn" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <span class="card-category">Institucional</span>
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">Projeto 02 — Vídeo Institucional</h3>
+              <span class="card-duration">2:15</span>
+            </div>
+          </article>
+
+          <article class="portfolio-card tilt-card reveal-up"
+                   data-category="produto"
+                   data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+            <div class="card-thumb">
+              <div class="thumb-placeholder" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Projeto 03</span>
+              </div>
+              <div class="card-overlay">
+                <div class="play-btn" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <span class="card-category">Produto</span>
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">Projeto 03 — Review de Produto</h3>
+              <span class="card-duration">1:00</span>
+            </div>
+          </article>
+
+          <article class="portfolio-card tilt-card reveal-up"
+                   data-category="reels"
+                   data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+            <div class="card-thumb">
+              <div class="thumb-placeholder" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Projeto 04</span>
+              </div>
+              <div class="card-overlay">
+                <div class="play-btn" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <span class="card-category">Reels</span>
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">Projeto 04 — Motion Tracking</h3>
+              <span class="card-duration">0:45</span>
+            </div>
+          </article>
+
+          <article class="portfolio-card tilt-card reveal-up"
+                   data-category="institucional"
+                   data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+            <div class="card-thumb">
+              <div class="thumb-placeholder" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Projeto 05</span>
+              </div>
+              <div class="card-overlay">
+                <div class="play-btn" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <span class="card-category">Institucional</span>
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">Projeto 05 — Marca Pessoal</h3>
+              <span class="card-duration">3:00</span>
+            </div>
+          </article>
+
+          <article class="portfolio-card tilt-card reveal-up"
+                   data-category="produto"
+                   data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1">
+            <div class="card-thumb">
+              <div class="thumb-placeholder" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Projeto 06</span>
+              </div>
+              <div class="card-overlay">
+                <div class="play-btn" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+              </div>
+              <span class="card-category">Produto</span>
+            </div>
+            <div class="card-info">
+              <h3 class="card-title">Projeto 06 — Color Grading</h3>
+              <span class="card-duration">1:00</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="modal-overlay" id="videoModal" role="dialog" aria-modal="true" aria-label="Player de vídeo" hidden>
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose" aria-label="Fechar player">✕</button>
+        <div class="modal-player">
+          <iframe id="modalIframe"
+                  src=""
+                  title="Vídeo do portfólio"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 5. SERVIÇOS ===== -->
+    <section id="servicos" class="servicos" aria-labelledby="servicos-title">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label reveal-up">O que eu faço</p>
+          <h2 class="section-title reveal-up" id="servicos-title">
+            Serviços <span class="accent">disponíveis</span>
+          </h2>
+        </div>
+
+        <div class="servicos-grid">
+          <div class="servico-card reveal-up" style="--delay:0">
+            <div class="servico-icon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h3 class="servico-title">Reels & Stories</h3>
+            <p class="servico-desc">
+              Edição dinâmica para Instagram e TikTok. Cortes rápidos, texto animado,
+              música sincronizada e efeitos que prendem a atenção nos primeiros segundos.
+            </p>
+            <p class="servico-price">A partir de <span class="accent">R$ XX</span></p>
+            <!-- Substitua o número do WhatsApp abaixo -->
+            <a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Solicitar orçamento
+            </a>
+          </div>
+
+          <div class="servico-card servico-featured reveal-up" style="--delay:1">
+            <div class="servico-badge">Mais popular</div>
+            <div class="servico-icon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M15 10l4.553-2.069A1 1 0 0 1 21 8.845v6.311a1 1 0 0 1-1.447.894L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/>
+              </svg>
+            </div>
+            <h3 class="servico-title">Vídeo Institucional</h3>
+            <p class="servico-desc">
+              Apresente sua marca com profissionalismo. Edição completa com color grading
+              cinematográfico, trilha cuidadosa e motion graphics.
+            </p>
+            <p class="servico-price">A partir de <span class="accent">R$ XX</span></p>
+            <!-- Substitua o número do WhatsApp abaixo -->
+            <a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+              Solicitar orçamento
+            </a>
+          </div>
+
+          <div class="servico-card reveal-up" style="--delay:2">
+            <div class="servico-icon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 class="servico-title">Edição Contínua</h3>
+            <p class="servico-desc">
+              Pacote mensal para criadores e marcas. Volume fixo de vídeos todo mês,
+              prioridade na fila e desconto progressivo por fidelidade.
+            </p>
+            <p class="servico-price">A partir de <span class="accent">R$ XX/mês</span></p>
+            <!-- Substitua o número do WhatsApp abaixo -->
+            <a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Solicitar orçamento
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 6. PROCESSO ===== -->
+    <section id="processo" class="processo" aria-labelledby="processo-title">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label reveal-up">Como funciona</p>
+          <h2 class="section-title reveal-up" id="processo-title">
+            Do briefing à<br /><span class="accent">entrega final</span>
+          </h2>
+        </div>
+
+        <div class="processo-timeline">
+          <div class="processo-step reveal-up" style="--delay:0">
+            <div class="step-number" aria-hidden="true">01</div>
+            <div class="step-connector" aria-hidden="true"></div>
+            <div class="step-content">
+              <h3 class="step-title">Briefing</h3>
+              <p class="step-desc">
+                Alinhamos objetivo, estilo, referências e prazo.
+                Quanto mais claro o briefing, melhor o resultado.
+              </p>
+            </div>
+          </div>
+          <div class="processo-step reveal-up" style="--delay:1">
+            <div class="step-number" aria-hidden="true">02</div>
+            <div class="step-connector" aria-hidden="true"></div>
+            <div class="step-content">
+              <h3 class="step-title">Edição profissional</h3>
+              <p class="step-desc">
+                Corte, color grading, motion graphics, trilha e efeitos.
+                Cada frame pensado para o objetivo.
+              </p>
+            </div>
+          </div>
+          <div class="processo-step reveal-up" style="--delay:2">
+            <div class="step-number" aria-hidden="true">03</div>
+            <div class="step-connector" aria-hidden="true"></div>
+            <div class="step-content">
+              <h3 class="step-title">Revisão</h3>
+              <p class="step-desc">
+                Você assiste, sugere ajustes e eu refino.
+                Até ficar exatamente como você imaginou.
+              </p>
+            </div>
+          </div>
+          <div class="processo-step reveal-up" style="--delay:3">
+            <div class="step-number" aria-hidden="true">04</div>
+            <div class="step-content">
+              <h3 class="step-title">Entrega final</h3>
+              <p class="step-desc">
+                Arquivo em alta qualidade, no formato correto para cada plataforma.
+                Pronto para publicar.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 7. DEPOIMENTOS ===== -->
+    <section id="depoimentos" class="depoimentos" aria-labelledby="depo-title">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label reveal-up">O que dizem</p>
+          <h2 class="section-title reveal-up" id="depo-title">
+            Clientes que<br /><span class="accent">confiaram</span>
+          </h2>
+        </div>
+
+        <div class="carousel-wrapper reveal-up">
+          <div class="carousel-viewport" id="carouselViewport">
+            <div class="carousel-track" id="carouselTrack" role="list">
+
+              <div class="depo-card" role="listitem">
+                <div class="depo-stars" aria-label="5 estrelas">★★★★★</div>
+                <blockquote class="depo-text">
+                  "O Matheus transformou completamente a minha presença digital.
+                  Os Reels que ele editou triplicaram meu engajamento em menos de um mês."
+                </blockquote>
+                <div class="depo-author">
+                  <div class="depo-avatar" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <div>
+                    <strong class="depo-name">Nome do Cliente</strong>
+                    <span class="depo-role">Criador de Conteúdo</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="depo-card" role="listitem">
+                <div class="depo-stars" aria-label="5 estrelas">★★★★★</div>
+                <blockquote class="depo-text">
+                  "Profissional excepcional. Entregou antes do prazo, com qualidade muito
+                  acima do esperado. Meu vídeo institucional ficou cinematográfico."
+                </blockquote>
+                <div class="depo-author">
+                  <div class="depo-avatar" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <div>
+                    <strong class="depo-name">Nome do Cliente</strong>
+                    <span class="depo-role">Empreendedor</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="depo-card" role="listitem">
+                <div class="depo-stars" aria-label="5 estrelas">★★★★★</div>
+                <blockquote class="depo-text">
+                  "Desde que comecei a trabalhar com o Matheus, meus clientes comentam
+                  o quanto meu conteúdo melhorou. Retorno sobre investimento real e mensurável."
+                </blockquote>
+                <div class="depo-author">
+                  <div class="depo-avatar" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <div>
+                    <strong class="depo-name">Nome do Cliente</strong>
+                    <span class="depo-role">Influenciador Digital</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-arrow carousel-prev" id="carouselPrev" aria-label="Depoimento anterior">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Navegação do carrossel">
+              <button class="dot active" data-index="0" role="tab" aria-selected="true" aria-label="Depoimento 1"></button>
+              <button class="dot" data-index="1" role="tab" aria-selected="false" aria-label="Depoimento 2"></button>
+              <button class="dot" data-index="2" role="tab" aria-selected="false" aria-label="Depoimento 3"></button>
+            </div>
+            <button class="carousel-arrow carousel-next" id="carouselNext" aria-label="Próximo depoimento">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 8. CTA FINAL ===== -->
+    <section id="contato" class="cta-final" aria-labelledby="cta-title">
+      <div class="cta-bg" aria-hidden="true"></div>
+      <div class="container">
+        <div class="cta-content">
+          <h2 class="cta-title reveal-up" id="cta-title">
+            Pronto para seu<br />vídeo <span>converter?</span>
+          </h2>
+          <p class="cta-subtitle reveal-up">Respondo em menos de 2 horas.</p>
+          <div class="cta-btns reveal-up">
+            <!-- Substitua o número do WhatsApp abaixo -->
+            <a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="https://instagram.com/matheusvidic._" target="_blank" rel="noopener noreferrer" class="btn btn-dark">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram @matheusvidic._
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#hero" class="footer-logo" aria-label="Voltar ao topo">MV<span class="accent">.</span></a>
+          <p class="footer-tagline">Vídeos que vendem.<br />Conteúdo que converte.</p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Links do rodapé">
+          <h4 class="footer-nav-title">Navegação</h4>
+          <ul role="list">
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#portfolio">Portfólio</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#processo">Processo</a></li>
+            <li><a href="#depoimentos">Depoimentos</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer-social">
+          <h4 class="footer-nav-title">Contato</h4>
+          <a href="https://instagram.com/matheusvidic._" target="_blank" rel="noopener noreferrer" class="footer-social-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @matheusvidic._
+          </a>
+          <!-- Substitua o número do WhatsApp abaixo -->
+          <a href="https://wa.me/5547XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="footer-social-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 Matheus Vidic. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
