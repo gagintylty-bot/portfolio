@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+
+/* ===================================================================
+   DESIGN TOKENS — autoridade premium + seriedade jurídica
+   Fundo quase-preto, superfícies escuras, 1 cor de destaque (laranja).
+   Em Tailwind v4 estes tokens viram utilities: bg-base, text-fg,
+   border-line, font-display, etc.
+=================================================================== */
+@theme {
+  /* Cores — fundo / superfícies / texto
+     OBS: o fundo se chama "night" (não "base") de propósito — o nome
+     "base" colidiria com o utilitário de tamanho de fonte text-base. */
+  --color-night: #0b0b0d; /* fundo quase preto */
+  --color-surface: #141417; /* cards e blocos */
+  --color-surface-2: #1b1b1f; /* hover / superfície elevada */
+  --color-line: #27272a; /* bordas sutis 1px */
+  --color-fg: #f4f4f5; /* texto principal */
+  --color-muted: #a1a1aa; /* texto secundário */
+
+  /* Cor de destaque (usar com parcimônia: CTAs, números, acentos) */
+  --color-accent: #ff6b1a;
+  --color-accent-soft: #ff7e33;
+  --color-accent-ink: #1a0c02; /* texto sobre laranja */
+
+  /* Dourado/âmbar para selos de autoridade */
+  --color-gold: #e0b25c;
+
+  /* Tipografia */
+  --font-display: 'Oswald', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Largura máxima de container editorial */
+  --breakpoint-3xl: 100rem;
+}
+
+/* ===================================================================
+   BASE
+=================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-night);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Headlines de impacto usam Oswald */
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  /* Foco visível e acessível em todos os interativos */
+  :where(a, button, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ===================================================================
+   UTILITÁRIOS CUSTOM
+=================================================================== */
+@layer utilities {
+  /* Textura sutil de ruído no fundo (sem stock photos) */
+  .noise-bg::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Glow laranja suave para destaques */
+  .accent-glow {
+    box-shadow: 0 0 0 1px rgb(255 107 26 / 0.25), 0 0 40px -12px rgb(255 107 26 / 0.45);
+  }
+
+  /* Número editorial gigante (estilo "20", "365") */
+  .stat-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  /* Gradiente radial sutil de fundo no topo */
+  .hero-radial {
+    background:
+      radial-gradient(900px 500px at 50% -10%, rgb(255 107 26 / 0.10), transparent 70%),
+      radial-gradient(600px 400px at 85% 10%, rgb(224 178 92 / 0.05), transparent 70%);
+  }
+}
