@@ -79,11 +79,45 @@ vercel --prod     # produção
 
 > `vercel.json` já define framework, build e cache dos assets.
 
+## Área de Membros (produto pago)
+
+App de treino das 20 leis penais especiais, no mesmo projeto. Rotas:
+
+| Rota | Tela |
+| --- | --- |
+| `/` | Landing (venda) |
+| `/area` | Acesso por código |
+| `/area/dashboard` | Painel das 20 leis + progresso |
+| `/area/lei/:slug` | Módulo de treino (casos práticos) |
+
+- **Progresso** persistido em `localStorage` (`src/lib/progresso.ts`) — sem backend.
+- **Conteúdo de treino** em `src/data/leis/<slug>.ts` (1 arquivo por lei),
+  desacoplado do código. Veja [`REVISAO-JURIDICA.md`](./REVISAO-JURIDICA.md).
+- Verificação: `npm run check:cenarios` (conta casos por lei, falha se < 15).
+
+### ⚠️ Controle de acesso — NÃO é segurança real
+
+O acesso é um **gate simples por código** no navegador
+(`src/data/acessos.ts` + `src/lib/auth.ts`). Os códigos válidos ficam no
+front-end, então **qualquer pessoa com conhecimento técnico consegue burlar**.
+Serve apenas para **entrega rápida pós-compra**.
+
+Para proteção de verdade, troque por um backend/auth — ex.: **Supabase**, ou a
+**área de membros nativa da Cakto/Kiwify**. O ponto de troca está **isolado em
+`src/lib/auth.ts`**: basta reescrever aquelas funções, sem mexer em componente.
+
+**Códigos de acesso:** edite a lista em `src/data/acessos.ts`. Código de demo:
+`LPE-DEMO-0001`.
+
+> O `vercel.json` já inclui o *rewrite* de SPA, necessário para as rotas
+> `/area/...` funcionarem ao recarregar a página.
+
 ## Acessibilidade & Performance
 
 - Mobile-first; testado em 375 / 768 / 1440px.
 - Contraste adequado no tema escuro; `prefers-reduced-motion` respeitado.
-- Sem imagens pesadas (ícones SVG + tipografia), CSS ~6 kB gzip.
+- Sem imagens pesadas (ícones SVG + tipografia), CSS ~7 kB gzip.
+- Telas da área com **code-splitting** (lazy) — não pesam na landing.
 - Lighthouse alvo: Performance e Accessibility > 90.
 
 ## Aviso

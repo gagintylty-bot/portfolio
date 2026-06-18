@@ -73,7 +73,21 @@ Essas páginas **ainda não existem**. Opções:
 
 ---
 
-## 5. ✅ Checklist rápido antes de anunciar
+## 5. 🔐 Área de membros (produto pago)
+
+| O quê | Onde | Observação |
+| --- | --- | --- |
+| **Códigos de acesso** | `src/data/acessos.ts` | Os que você entrega ao comprador. **Não é segurança real** (ver README). |
+| **Conteúdo de treino** | `src/data/leis/<lei>.ts` | 1 arquivo por lei. Revisar e marcar `revisado: true`. |
+| WhatsApp "não recebi o código" | `src/config.ts` → `whatsappUrl` | Mesmo link do site. |
+
+> ⚠️ **Conteúdo jurídico é rascunho** gerado por IA (`revisado: false`).
+> Precisa de revisão por advogado antes de publicar — veja
+> `REVISAO-JURIDICA.md`. Hoje só a **Lei de Drogas** tem casos (amostra).
+
+---
+
+## 6. ✅ Checklist rápido antes de anunciar
 
 - [ ] `checkoutUrl` apontando para o checkout real
 - [ ] `whatsappUrl` com seu número

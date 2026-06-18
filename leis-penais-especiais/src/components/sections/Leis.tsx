@@ -4,7 +4,7 @@ import { Section } from '../ui/Section'
 import { Container } from '../ui/Container'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Button } from '../ui/Button'
-import { leis } from '../../data/leis'
+import { leisMeta as leis } from '../../data/leis/meta'
 
 export function Leis() {
   return (
@@ -19,7 +19,7 @@ export function Leis() {
         <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
           {leis.map((lei, i) => (
             <motion.div
-              key={lei.ordem}
+              key={lei.slug}
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -27,7 +27,7 @@ export function Leis() {
               className="group relative flex flex-col justify-between rounded-2xl border border-line bg-surface/60 p-4 transition-all duration-300 hover:border-accent/50 hover:bg-surface-2 hover:shadow-[0_0_30px_-12px_rgb(255,107,26,0.5)]"
             >
               <span className="stat-number text-2xl text-accent/80 transition-colors group-hover:text-accent sm:text-3xl">
-                {String(lei.ordem).padStart(2, '0')}
+                {String(i + 1).padStart(2, '0')}
               </span>
               <div className="mt-4">
                 <h3 className="font-display text-sm font-semibold uppercase leading-tight text-fg sm:text-base">
