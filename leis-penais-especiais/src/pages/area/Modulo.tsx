@@ -182,10 +182,17 @@ export function Modulo() {
             <span>
               Caso {indice + 1} de {total}
             </span>
-            <span
-              className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase ${CORES_DIF[cenario.dificuldade]}`}
-            >
-              {ROTULO_DIFICULDADE[cenario.dificuldade]}
+            <span className="flex items-center gap-2">
+              {cenario.tipo === 'vf' && (
+                <span className="rounded-full border border-line px-2.5 py-0.5 text-[11px] font-semibold uppercase text-muted">
+                  V ou F
+                </span>
+              )}
+              <span
+                className={`rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase ${CORES_DIF[cenario.dificuldade]}`}
+              >
+                {ROTULO_DIFICULDADE[cenario.dificuldade]}
+              </span>
             </span>
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-night">

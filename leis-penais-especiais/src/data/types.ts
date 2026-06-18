@@ -9,13 +9,22 @@
 
 export type Dificuldade = 'facil' | 'medio' | 'dificil'
 
-/** Uma situação prática de treino (caso de múltipla escolha). */
+/**
+ * Tipo da questão. Todos usam a mesma estrutura (alternativas + corretaId):
+ *  - 'multipla' → 4 alternativas (padrão).
+ *  - 'vf'       → 2 alternativas (Verdadeiro / Falso).
+ */
+export type TipoQuestao = 'multipla' | 'vf'
+
+/** Uma situação prática de treino. */
 export interface Cenario {
   id: string
   dificuldade: Dificuldade
+  /** Tipo da questão (padrão 'multipla' quando ausente). */
+  tipo?: TipoQuestao
   /** A situação prática — fato concreto que um criminalista enfrentaria. */
   enunciado: string
-  /** 4 opções de resposta. */
+  /** Opções de resposta (4 na múltipla, 2 no V/F). */
   alternativas: { id: string; texto: string }[]
   /** id da alternativa correta. */
   corretaId: string
