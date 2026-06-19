@@ -26,13 +26,13 @@ export const config = {
   metodoNome: 'Método G.A.P.', // Gatilhos de Aplicação Prática
 
   /** [EDITAR] Valor âncora (riscado) */
-  precoAncora: 'R$ 1.997',
+  precoAncora: 'R$ 697',
 
   /** [EDITAR] Preço real de venda */
-  precoReal: 'R$ 497',
+  precoReal: 'R$ 197',
 
   /** [EDITAR] Parcelamento (deixe '' para ocultar) */
-  precoParcelado: '12x de R$ 49,70',
+  precoParcelado: '12x de R$ 19,90',
 
   /** [EDITAR] Prazo da garantia incondicional */
   garantiaDias: 7,

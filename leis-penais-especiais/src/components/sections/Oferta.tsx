@@ -9,11 +9,11 @@ import { config } from '../../config'
 
 /** [EDITAR] Itens reais entregues no produto. */
 const itens = [
-  { titulo: 'As 20 leis penais especiais destrinchadas', valor: 'R$ 997' },
-  { titulo: 'Mapa de gatilhos de aplicação de cada lei', valor: 'R$ 297' },
-  { titulo: 'Material de consulta rápida para a audiência', valor: 'R$ 297' },
-  { titulo: 'Guia de nulidades e teses defensivas mais usadas', valor: 'R$ 197' },
-  { titulo: 'Atualizações sempre que a legislação mudar', valor: 'R$ 197' },
+  { titulo: 'As 20 leis penais especiais destrinchadas', valor: 'R$ 297' },
+  { titulo: 'Mapa de gatilhos de aplicação de cada lei', valor: 'R$ 147' },
+  { titulo: 'Material de consulta rápida para a audiência', valor: 'R$ 97' },
+  { titulo: 'Guia de nulidades e teses defensivas mais usadas', valor: 'R$ 77' },
+  { titulo: 'Atualizações sempre que a legislação mudar', valor: 'R$ 79' },
   { titulo: 'Acesso vitalício e em qualquer dispositivo', valor: 'Incluso' },
 ]
 
