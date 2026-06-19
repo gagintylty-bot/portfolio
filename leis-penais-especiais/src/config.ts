@@ -11,7 +11,7 @@
 export const config = {
   // --- LINKS DE CONVERSÃO -------------------------------------------
   /** [EDITAR] URL do checkout (Cakto / Kiwify) */
-  checkoutUrl: 'https://EDITAR-checkout.cakto.com.br/seu-produto',
+  checkoutUrl: 'https://pay.kiwify.com.br/koJmm3M',
 
   /** [EDITAR] Link do WhatsApp (formato wa.me) */
   whatsappUrl:
