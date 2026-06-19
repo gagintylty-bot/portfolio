@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Trophy, ArrowRight, CheckCircle2, PlayCircle, Circle } from 'lucide-react'
+import { Trophy, ArrowRight, CheckCircle2, PlayCircle, Circle, KeyRound } from 'lucide-react'
 import { leis } from '../../data/leis'
+import { getCodigoAtivo } from '../../lib/auth'
 import { getResumoLei, getResumoGeral, type ResumoLei } from '../../lib/progresso'
 import { AreaHeader } from '../../components/area/AreaHeader'
 import { AvisoConteudo } from '../../components/area/AvisoConteudo'
@@ -45,6 +46,7 @@ export function Dashboard() {
   }, [resumos])
 
   const visiveis = resumos.filter(({ resumo }) => casa(resumo, filtro))
+  const codigoAtivo = getCodigoAtivo()
 
   return (
     <div className="noise-bg min-h-screen">
@@ -61,6 +63,14 @@ export function Dashboard() {
             <span className="font-semibold text-accent">{geral.dominadas}</span> de{' '}
             {geral.totalLeis} leis. {geral.emAndamento > 0 && `${geral.emAndamento} em andamento.`}
           </p>
+
+          {codigoAtivo && (
+            <p className="mt-3 inline-flex items-center gap-2 rounded-lg border border-line bg-surface/60 px-3 py-1.5 text-xs text-muted">
+              <KeyRound size={13} className="shrink-0 text-gold" />
+              Seu acesso: salve este código para entrar em outro dispositivo —{' '}
+              <span className="font-semibold tracking-wider text-fg">{codigoAtivo}</span>
+            </p>
+          )}
 
           {continuar && (
             <motion.div

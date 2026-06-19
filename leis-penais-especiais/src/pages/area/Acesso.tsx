@@ -1,19 +1,43 @@
-import { useState, type FormEvent } from 'react'
-import { Navigate, useNavigate, Link } from 'react-router-dom'
+import { useState, useEffect, type FormEvent } from 'react'
+import { Navigate, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { KeyRound, ArrowRight, MessageCircle, ArrowLeft } from 'lucide-react'
-import { login, isAutenticado } from '../../lib/auth'
+import { login, isAutenticado, isCodigoValido } from '../../lib/auth'
 import { ActionButton } from '../../components/ui/ActionButton'
 import { Button } from '../../components/ui/Button'
 import { AvisoConteudo } from '../../components/area/AvisoConteudo'
 
 export function Acesso() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [codigo, setCodigo] = useState('')
   const [erro, setErro] = useState(false)
 
+  // Auto-login por ?code= (link de 1 clique vindo do e-mail da Kiwify).
+  const codeParam = searchParams.get('code')
+  const autoEntrando = !isAutenticado() && !!codeParam && isCodigoValido(codeParam)
+
+  useEffect(() => {
+    if (autoEntrando && codeParam) {
+      login(codeParam) // persiste no localStorage (mesma validação do auth.ts)
+      // redireciona já limpando o ?code= da URL (replace, sem query)
+      navigate('/area/dashboard', { replace: true })
+    }
+    // só na montagem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Já tem acesso? vai direto para o painel.
   if (isAutenticado()) return <Navigate to="/area/dashboard" replace />
+
+  // Tem code válido na URL → mostra "entrando…" em vez do gate (sem flash).
+  if (autoEntrando) {
+    return (
+      <main className="noise-bg flex min-h-screen items-center justify-center bg-night px-5 text-muted">
+        <span className="animate-pulse font-display uppercase tracking-wider">Entrando…</span>
+      </main>
+    )
+  }
 
   function entrar(e: FormEvent) {
     e.preventDefault()

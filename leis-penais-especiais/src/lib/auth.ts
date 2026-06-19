@@ -54,3 +54,13 @@ export function isAutenticado(): boolean {
     return false
   }
 }
+
+/** Retorna o código de acesso atualmente salvo (normalizado), ou null. */
+export function getCodigoAtivo(): string | null {
+  try {
+    const salvo = localStorage.getItem(STORAGE_KEY)
+    return salvo && isCodigoValido(salvo) ? normalizar(salvo) : null
+  } catch {
+    return null
+  }
+}
