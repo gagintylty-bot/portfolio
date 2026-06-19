@@ -1,9 +1,10 @@
 import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
 import './index.css'
 
 import App from './App.tsx'
+import { MetaPixel } from './components/MetaPixel.tsx'
 import { ProtectedRoute } from './components/area/ProtectedRoute.tsx'
 
 // Telas da área carregadas sob demanda — mantêm o bundle da landing enxuto.
@@ -25,31 +26,49 @@ function comSuspense(node: React.ReactNode) {
   return <Suspense fallback={<Carregando />}>{node}</Suspense>
 }
 
+/**
+ * Layout raiz: presente em TODAS as rotas. Mantém o Meta Pixel montado uma
+ * única vez (dispara PageView a cada navegação via useLocation).
+ */
+function RootLayout() {
+  return (
+    <>
+      <MetaPixel />
+      <Outlet />
+    </>
+  )
+}
+
 const router = createBrowserRouter([
-  // Landing (já existente) — não quebrar.
-  { path: '/', element: <App /> },
-
-  // Área de membros (produto pago).
-  { path: '/area', element: comSuspense(<Acesso />) },
   {
-    path: '/area/dashboard',
-    element: comSuspense(
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>,
-    ),
-  },
-  {
-    path: '/area/lei/:slug',
-    element: comSuspense(
-      <ProtectedRoute>
-        <Modulo />
-      </ProtectedRoute>,
-    ),
-  },
+    element: <RootLayout />,
+    children: [
+      // Landing (já existente) — não quebrar.
+      { path: '/', element: <App /> },
 
-  // Qualquer outra rota cai na landing.
-  { path: '*', element: <App /> },
+      // Área de membros (produto pago).
+      { path: '/area', element: comSuspense(<Acesso />) },
+      {
+        path: '/area/dashboard',
+        element: comSuspense(
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>,
+        ),
+      },
+      {
+        path: '/area/lei/:slug',
+        element: comSuspense(
+          <ProtectedRoute>
+            <Modulo />
+          </ProtectedRoute>,
+        ),
+      },
+
+      // Qualquer outra rota cai na landing.
+      { path: '*', element: <App /> },
+    ],
+  },
 ])
 
 createRoot(document.getElementById('root')!).render(

@@ -1,4 +1,3 @@
-import { MetaPixel } from './components/MetaPixel'
 import { TopBar } from './components/ui/TopBar'
 import { StickyCTA } from './components/ui/StickyCTA'
 
@@ -17,7 +16,6 @@ import { Footer } from './components/sections/Footer'
 export default function App() {
   return (
     <div id="top" className="noise-bg relative min-h-screen">
-      <MetaPixel />
       <TopBar />
 
       <main className="relative z-10">

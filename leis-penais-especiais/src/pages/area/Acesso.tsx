@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { KeyRound, ArrowRight, MessageCircle, ArrowLeft } from 'lucide-react'
 import { login, isAutenticado, isCodigoValido } from '../../lib/auth'
+import { trackEvent } from '../../lib/meta-pixel'
 import { ActionButton } from '../../components/ui/ActionButton'
 import { Button } from '../../components/ui/Button'
 import { AvisoConteudo } from '../../components/area/AvisoConteudo'
@@ -20,6 +21,8 @@ export function Acesso() {
   useEffect(() => {
     if (autoEntrando && codeParam) {
       login(codeParam) // persiste no localStorage (mesma validação do auth.ts)
+      // conversão: acesso ativado via link de 1 clique
+      trackEvent('CompleteRegistration', { content_name: 'Acesso Ativado', status: true })
       // redireciona já limpando o ?code= da URL (replace, sem query)
       navigate('/area/dashboard', { replace: true })
     }

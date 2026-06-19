@@ -18,8 +18,8 @@ export const config = {
     'https://wa.me/5500000000000?text=Quero%20saber%20mais%20sobre%20o%20m%C3%A9todo%20das%20leis%20penais%20especiais',
 
   // --- TRACKING -----------------------------------------------------
-  /** [EDITAR] ID do Meta Pixel. Deixe vazio ('') para desativar em dev. */
-  metaPixelId: '', // ex.: '1234567890123456'
+  /** [EDITAR] ID do Meta Pixel. Deixe vazio ('') para desativar. */
+  metaPixelId: '1020339810489393',
 
   // --- OFERTA / PREÇO ----------------------------------------------
   /** [EDITAR] Nome do método/mecanismo */

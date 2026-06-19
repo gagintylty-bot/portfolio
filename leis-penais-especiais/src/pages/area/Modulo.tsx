@@ -24,6 +24,7 @@ import {
 import { AreaHeader } from '../../components/area/AreaHeader'
 import { AvisoConteudo } from '../../components/area/AvisoConteudo'
 import { ActionButton } from '../../components/ui/ActionButton'
+import { trackEvent } from '../../lib/meta-pixel'
 
 const ORDEM_DIF: Record<Dificuldade, number> = { facil: 0, medio: 1, dificil: 2 }
 
@@ -63,6 +64,16 @@ export function Modulo() {
   const [selecionada, setSelecionada] = useState<string | null>(null)
 
   useEffect(() => setSelecionada(null), [indice])
+
+  // Conversão: abriu o módulo de treino de uma lei.
+  useEffect(() => {
+    if (lei) {
+      trackEvent('ViewContent', {
+        content_name: lei.slug,
+        content_category: 'Módulo de Treino',
+      })
+    }
+  }, [lei?.slug])
 
   if (!lei) return <Navigate to="/area/dashboard" replace />
 
