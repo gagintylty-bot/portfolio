@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { ArrowRight, MessageCircle, ShieldCheck, Check } from 'lucide-react'
 import { Container } from '../ui/Container'
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
+import { CountUp } from '../ui/CountUp'
+import { LeisHero3D } from '../three/LeisHero3D'
 
 const bullets = [
   'Da Lei de Drogas à Lei de Organização Criminosa',
@@ -10,48 +12,105 @@ const bullets = [
   'Pronto para consultar antes da audiência',
 ]
 
+// Headline revelada palavra a palavra (a frase de impacto sai em laranja).
+const headline: { t: string; accent?: boolean }[] = [
+  { t: 'Você' }, { t: 'domina' }, { t: 'o' }, { t: 'Código' }, { t: 'Penal.' },
+  { t: 'Mas', accent: true }, { t: 'trava', accent: true }, { t: 'nas', accent: true },
+  { t: 'leis', accent: true }, { t: 'penais', accent: true }, { t: 'especiais', accent: true },
+  { t: '—' }, { t: 'bem' }, { t: 'na' }, { t: 'hora' }, { t: 'em' }, { t: 'que' },
+  { t: 'o' }, { t: 'caso' }, { t: 'é' }, { t: 'decidido.' },
+]
+
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.035, delayChildren: 0.1 } },
+}
+const word: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+}
+
 export function Hero() {
+  const reduzir = useReducedMotion()
+  const inicial = reduzir ? 'show' : 'hidden'
+
   return (
     <header className="hero-radial relative overflow-hidden pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
       {/* linha de acento superior */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px hairline-accent" />
+
+      {/* peça-assinatura 3D (desktop + WebGL apenas; se não, nada — fica o fallback radial) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[55%] lg:block"
+      >
+        <LeisHero3D />
+      </div>
 
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           {/* Coluna de texto */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Badge tone="gold" icon={<ShieldCheck size={14} />} className="mb-6">
-              Para advogados criminalistas
-            </Badge>
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Badge tone="gold" icon={<ShieldCheck size={14} />} className="mb-6">
+                Para advogados criminalistas
+              </Badge>
+            </motion.div>
 
-            <h1 className="font-display text-[2rem] font-bold uppercase leading-[1.04] text-fg sm:text-5xl lg:text-[3.4rem]">
-              Você domina o Código Penal.{' '}
-              <span className="text-accent">
-                Mas trava nas leis penais especiais
-              </span>{' '}
-              — bem na hora em que o caso é decidido.
-            </h1>
+            <motion.h1
+              variants={container}
+              initial={inicial}
+              animate="show"
+              className="font-display text-[2rem] font-bold uppercase leading-[1.04] text-fg sm:text-5xl lg:text-[3.4rem]"
+            >
+              {headline.map((w, i) => (
+                <motion.span
+                  key={i}
+                  variants={word}
+                  className={`inline-block ${w.accent ? 'text-accent' : ''}`}
+                  style={{ marginRight: '0.25em' }}
+                >
+                  {w.t}
+                </motion.span>
+              ))}
+            </motion.h1>
 
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
+            >
               O método que faz o advogado criminalista dominar as{' '}
               <strong className="font-semibold text-fg">20 leis penais especiais</strong> que mais
               caem na prática — sem reler 4.000 páginas de doutrina.
-            </p>
+            </motion.p>
 
             <ul className="mt-7 space-y-2.5">
-              {bullets.map((b) => (
-                <li key={b} className="flex items-start gap-3 text-sm text-fg/90 sm:text-base">
+              {bullets.map((b, i) => (
+                <motion.li
+                  key={b}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.65 + i * 0.1 }}
+                  className="flex items-start gap-3 text-sm text-fg/90 sm:text-base"
+                >
                   <Check size={18} className="mt-0.5 shrink-0 text-accent" />
                   <span>{b}</span>
-                </li>
+                </motion.li>
               ))}
             </ul>
 
-            <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 18, delay: 1 }}
+              className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+            >
               <Button
                 cta="checkout"
                 origem="hero"
@@ -69,14 +128,14 @@ export function Hero() {
               >
                 ou fale comigo no WhatsApp
               </Button>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          {/* Coluna do número editorial "20" */}
+          {/* Coluna do número editorial "20" (foreground, sobre o 3D) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto hidden w-full max-w-sm lg:block"
           >
             <div className="accent-glow relative rounded-3xl border border-line bg-surface/60 p-8 backdrop-blur">
@@ -84,7 +143,7 @@ export function Hero() {
                 Leis penais especiais
               </span>
               <div className="stat-number mt-2 bg-gradient-to-b from-accent to-accent-soft bg-clip-text text-[10rem] text-transparent">
-                20
+                <CountUp to={20} />
               </div>
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 As que realmente decidem os casos criminais do dia a dia — organizadas para você

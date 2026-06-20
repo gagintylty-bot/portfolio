@@ -1,5 +1,6 @@
 import { TopBar } from './components/ui/TopBar'
 import { StickyCTA } from './components/ui/StickyCTA'
+import { ScrollProgress } from './components/ui/ScrollProgress'
 
 import { Hero } from './components/sections/Hero'
 import { Problema } from './components/sections/Problema'
@@ -16,6 +17,7 @@ import { Footer } from './components/sections/Footer'
 export default function App() {
   return (
     <div id="top" className="noise-bg relative min-h-screen">
+      <ScrollProgress />
       <TopBar />
 
       <main className="relative z-10">

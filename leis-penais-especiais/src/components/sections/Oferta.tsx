@@ -1,11 +1,15 @@
+import { motion } from 'framer-motion'
 import { Check, ArrowRight, Flame } from 'lucide-react'
 import { Section } from '../ui/Section'
 import { Container } from '../ui/Container'
 import { SectionHeading } from '../ui/SectionHeading'
-import { Reveal } from '../ui/Reveal'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
+import { CountUp } from '../ui/CountUp'
 import { config } from '../../config'
+
+/** Valor numérico do preço (para o counter), derivado do config. */
+const precoNum = Number(config.precoReal.replace(/[^\d]/g, '')) || 0
 
 /** [EDITAR] Itens reais entregues no produto. */
 const itens = [
@@ -26,7 +30,13 @@ export function Oferta() {
           title="Tudo que você recebe para nunca mais travar fora do Código Penal"
         />
 
-        <Reveal className="mt-12">
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ type: 'spring', stiffness: 90, damping: 18, mass: 1.1 }}
+          className="mt-12"
+        >
           <div className="overflow-hidden rounded-3xl border border-accent/30 bg-surface/70 accent-glow">
             {/* topo do card */}
             <div className="border-b border-line bg-night/40 px-6 py-5 sm:px-8">
@@ -66,7 +76,7 @@ export function Oferta() {
               </p>
               <div className="mt-1 flex items-end justify-center gap-2">
                 <span className="stat-number bg-gradient-to-b from-accent to-accent-soft bg-clip-text text-6xl text-transparent sm:text-7xl">
-                  {config.precoReal}
+                  <CountUp to={precoNum} duration={1.4} format={(n) => `R$ ${n}`} />
                 </span>
               </div>
               {config.precoParcelado && (
@@ -86,7 +96,7 @@ export function Oferta() {
               <p className="mt-4 text-xs text-muted">{config.lote.descricao}</p>
             </div>
           </div>
-        </Reveal>
+        </motion.div>
       </Container>
     </Section>
   )

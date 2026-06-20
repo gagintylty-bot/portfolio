@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Target, Layers, Gavel } from 'lucide-react'
 import { Section } from '../ui/Section'
 import { Container } from '../ui/Container'
@@ -43,24 +44,32 @@ export function Solucao() {
           <Badge tone="accent">Apresentando o {config.metodoNome}</Badge>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {passos.map((p, i) => {
+        {/* respiro após o grid denso: bloco cresce devagar */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="mt-12 grid gap-5 md:grid-cols-3"
+        >
+          {passos.map((p) => {
             const Icon = p.icon
             return (
-              <Reveal key={p.titulo} delay={i * 0.1}>
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-night/50 p-6 transition-colors hover:border-accent/40">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
-                    <Icon size={22} />
-                  </div>
-                  <h3 className="mt-5 font-display text-lg font-semibold uppercase text-fg">
-                    {p.titulo}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{p.desc}</p>
+              <div
+                key={p.titulo}
+                className="flex h-full flex-col rounded-2xl border border-line bg-night/50 p-6 transition-colors hover:border-accent/40"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
+                  <Icon size={22} />
                 </div>
-              </Reveal>
+                <h3 className="mt-5 font-display text-lg font-semibold uppercase text-fg">
+                  {p.titulo}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{p.desc}</p>
+              </div>
             )
           })}
-        </div>
+        </motion.div>
       </Container>
     </Section>
   )

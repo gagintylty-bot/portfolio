@@ -1,14 +1,19 @@
+import { motion } from 'framer-motion'
 import { ShieldCheck } from 'lucide-react'
 import { Section } from '../ui/Section'
 import { Container } from '../ui/Container'
-import { Reveal } from '../ui/Reveal'
 import { config } from '../../config'
 
 export function Garantia() {
   return (
     <Section id="garantia" surface className="py-14 sm:py-16 lg:py-20">
       <Container size="narrow">
-        <Reveal>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="flex flex-col items-center gap-6 rounded-3xl border border-gold/30 bg-night/50 p-8 text-center sm:flex-row sm:p-10 sm:text-left">
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-gold/40 bg-gold/10 text-gold">
               <ShieldCheck size={40} />
@@ -24,7 +29,7 @@ export function Garantia() {
               </p>
             </div>
           </div>
-        </Reveal>
+        </motion.div>
       </Container>
     </Section>
   )

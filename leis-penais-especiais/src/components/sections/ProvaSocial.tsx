@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Quote, Star } from 'lucide-react'
 import { Section } from '../ui/Section'
 import { Container } from '../ui/Container'
@@ -17,8 +18,14 @@ export function ProvaSocial() {
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {depoimentos.map((d, i) => (
-            <Reveal key={d.nome} delay={(i % 2) * 0.1}>
-              <figure className="flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-6 transition-colors hover:border-accent/40">
+            <motion.figure
+              key={d.nome}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -48 : 48 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.55, delay: (i % 2) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-6 transition-colors hover:border-accent/40"
+            >
                 <Quote size={22} className="text-accent/70" />
                 <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-fg/90 sm:text-base">
                   "{d.texto}"
@@ -39,8 +46,7 @@ export function ProvaSocial() {
                     ))}
                   </span>
                 </figcaption>
-              </figure>
-            </Reveal>
+            </motion.figure>
           ))}
         </div>
 
