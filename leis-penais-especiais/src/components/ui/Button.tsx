@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { motion } from 'framer-motion'
 import { config } from '../../config'
 import { trackCTA, type CtaKind } from '../../lib/track'
 
@@ -27,7 +26,7 @@ interface ButtonProps {
 }
 
 const base =
-  'group relative inline-flex items-center justify-center gap-2.5 rounded-xl font-display font-semibold uppercase tracking-wide transition-colors duration-200 select-none'
+  'group relative inline-flex items-center justify-center gap-2.5 rounded-xl font-display font-semibold uppercase tracking-wide select-none transition-[transform,background-color,box-shadow] duration-200 will-change-transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97]'
 
 const sizes: Record<Size, string> = {
   md: 'px-6 py-3 text-sm',
@@ -40,7 +39,7 @@ const variants: Record<Variant, string> = {
   ghost: 'text-muted hover:text-fg underline-offset-4 hover:underline',
 }
 
-/** Botão de CTA: anchor externo + tracking centralizado em trackCTA. */
+/** Botão de CTA: anchor externo + tracking centralizado em trackCTA (CSS puro, sem Framer). */
 export function Button({
   children,
   cta,
@@ -55,14 +54,11 @@ export function Button({
   const href = cta === 'whatsapp' ? config.whatsappUrl : config.checkoutUrl
 
   return (
-    <motion.a
+    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackCTA(origem, cta)}
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.97 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 22 }}
       className={`${base} ${sizes[size]} ${variants[variant]} ${
         fullWidth ? 'w-full' : ''
       } ${className}`}
@@ -74,6 +70,6 @@ export function Button({
           {trailingIcon}
         </span>
       )}
-    </motion.a>
+    </a>
   )
 }

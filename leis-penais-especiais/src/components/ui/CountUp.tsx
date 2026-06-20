@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useInView, useReducedMotion } from 'framer-motion'
 
 interface CountUpProps {
   /** Valor final. */
@@ -13,31 +12,56 @@ interface CountUpProps {
 
 /**
  * Anima um número de 0 até `to` quando entra na viewport (easeOutCubic).
- * Respeita prefers-reduced-motion (mostra o valor final direto).
+ * Usa IntersectionObserver nativo (sem Framer) e respeita prefers-reduced-motion.
  */
 export function CountUp({ to, duration = 1.5, className, format }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.5 })
-  const reduzir = useReducedMotion()
   const [value, setValue] = useState(0)
 
   useEffect(() => {
-    if (!inView) return
+    const el = ref.current
+    if (!el) return
+
+    const reduzir =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     if (reduzir) {
       setValue(to)
       return
     }
+
     let raf = 0
-    const start = performance.now()
+    let iniciado = false
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
-    const tick = (now: number) => {
-      const p = Math.min((now - start) / (duration * 1000), 1)
-      setValue(Math.round(easeOutCubic(p) * to))
-      if (p < 1) raf = requestAnimationFrame(tick)
+    const animar = () => {
+      const start = performance.now()
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / (duration * 1000), 1)
+        setValue(Math.round(easeOutCubic(p) * to))
+        if (p < 1) raf = requestAnimationFrame(tick)
+      }
+      raf = requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [inView, reduzir, to, duration])
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !iniciado) {
+            iniciado = true
+            io.disconnect()
+            animar()
+          }
+        }
+      },
+      { threshold: 0.5 },
+    )
+    io.observe(el)
+
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(raf)
+    }
+  }, [to, duration])
 
   return (
     <span ref={ref} className={className}>

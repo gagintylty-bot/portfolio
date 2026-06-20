@@ -1,4 +1,3 @@
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { ArrowRight, MessageCircle, ShieldCheck, Check } from 'lucide-react'
 import { Container } from '../ui/Container'
 import { Button } from '../ui/Button'
@@ -21,25 +20,13 @@ const headline: { t: string; accent?: boolean }[] = [
   { t: 'o' }, { t: 'caso' }, { t: 'é' }, { t: 'decidido.' },
 ]
 
-const container: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.035, delayChildren: 0.1 } },
-}
-const word: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-}
-
 export function Hero() {
-  const reduzir = useReducedMotion()
-  const inicial = reduzir ? 'show' : 'hidden'
-
   return (
     <header className="hero-radial relative overflow-hidden pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
       {/* linha de acento superior */}
       <div className="absolute inset-x-0 top-0 h-px hairline-accent" />
 
-      {/* peça-assinatura 3D (desktop + WebGL apenas; se não, nada — fica o fallback radial) */}
+      {/* peça-assinatura 3D (desktop + WebGL apenas; senão, fica o fallback radial) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-[55%] lg:block"
@@ -51,65 +38,49 @@ export function Hero() {
         <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           {/* Coluna de texto */}
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Badge tone="gold" icon={<ShieldCheck size={14} />} className="mb-6">
+            <div className="anim-fade-up mb-6">
+              <Badge tone="gold" icon={<ShieldCheck size={14} />}>
                 Para advogados criminalistas
               </Badge>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              variants={container}
-              initial={inicial}
-              animate="show"
-              className="font-display text-[2rem] font-bold uppercase leading-[1.04] text-fg sm:text-5xl lg:text-[3.4rem]"
-            >
+            <h1 className="font-display text-[2rem] font-bold uppercase leading-[1.04] text-fg sm:text-5xl lg:text-[3.4rem]">
               {headline.map((w, i) => (
-                <motion.span
+                <span
                   key={i}
-                  variants={word}
-                  className={`inline-block ${w.accent ? 'text-accent' : ''}`}
-                  style={{ marginRight: '0.25em' }}
+                  className={`anim-word ${w.accent ? 'text-accent' : ''}`}
+                  style={{ marginRight: '0.25em', animationDelay: `${0.1 + i * 0.035}s` }}
                 >
                   {w.t}
-                </motion.span>
+                </span>
               ))}
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
+            <p
+              className="anim-fade mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
+              style={{ animationDelay: '0.5s' }}
             >
               O método que faz o advogado criminalista dominar as{' '}
               <strong className="font-semibold text-fg">20 leis penais especiais</strong> que mais
               caem na prática — sem reler 4.000 páginas de doutrina.
-            </motion.p>
+            </p>
 
             <ul className="mt-7 space-y-2.5">
               {bullets.map((b, i) => (
-                <motion.li
+                <li
                   key={b}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.65 + i * 0.1 }}
-                  className="flex items-start gap-3 text-sm text-fg/90 sm:text-base"
+                  className="anim-slide-left flex items-start gap-3 text-sm text-fg/90 sm:text-base"
+                  style={{ animationDelay: `${0.65 + i * 0.1}s` }}
                 >
                   <Check size={18} className="mt-0.5 shrink-0 text-accent" />
                   <span>{b}</span>
-                </motion.li>
+                </li>
               ))}
             </ul>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 220, damping: 18, delay: 1 }}
-              className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+            <div
+              className="anim-pop mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+              style={{ animationDelay: '1s' }}
             >
               <Button
                 cta="checkout"
@@ -128,15 +99,13 @@ export function Hero() {
               >
                 ou fale comigo no WhatsApp
               </Button>
-            </motion.div>
+            </div>
           </div>
 
           {/* Coluna do número editorial "20" (foreground, sobre o 3D) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto hidden w-full max-w-sm lg:block"
+          <div
+            className="anim-scale-in relative mx-auto hidden w-full max-w-sm lg:block"
+            style={{ animationDelay: '0.3s' }}
           >
             <div className="accent-glow relative rounded-3xl border border-line bg-surface/60 p-8 backdrop-blur">
               <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted">
@@ -154,7 +123,7 @@ export function Hero() {
                 Método estruturado para a prática forense
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
     </header>

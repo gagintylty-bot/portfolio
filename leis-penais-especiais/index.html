@@ -38,7 +38,16 @@
     <meta name="twitter:image" content="/og-image.jpg" />
 
     <!-- Fontes (Oswald + DM Sans) são self-hosted via @fontsource (em main.tsx),
-         com font-display: swap. Sem request externo bloqueante. -->
+         com font-display: swap. Sem request externo bloqueante.
+         Preload do Oswald 700 (fonte da headline / LCP). O hash é de conteúdo,
+         estável entre builds; só muda se o arquivo da fonte mudar. -->
+    <link
+      rel="preload"
+      href="/assets/oswald-latin-700-normal-vy6hmKSr.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
     <div id="root"></div>
