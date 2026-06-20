@@ -1,18 +1,12 @@
+import { Suspense, lazy } from 'react'
 import { TopBar } from './components/ui/TopBar'
 import { StickyCTA } from './components/ui/StickyCTA'
 import { ScrollProgress } from './components/ui/ScrollProgress'
-
 import { Hero } from './components/sections/Hero'
-import { Problema } from './components/sections/Problema'
-import { Leis } from './components/sections/Leis'
-import { Solucao } from './components/sections/Solucao'
-import { Oferta } from './components/sections/Oferta'
-import { Garantia } from './components/sections/Garantia'
-import { ProvaSocial } from './components/sections/ProvaSocial'
-import { ParaQuem } from './components/sections/ParaQuem'
-import { FAQ } from './components/sections/FAQ'
-import { CTAFinal } from './components/sections/CTAFinal'
 import { Footer } from './components/sections/Footer'
+
+// Above-the-fold (Hero) carrega imediato; o resto vem em chunk separado.
+const BelowFold = lazy(() => import('./components/sections/BelowFold'))
 
 export default function App() {
   return (
@@ -22,15 +16,9 @@ export default function App() {
 
       <main className="relative z-10">
         <Hero />
-        <Problema />
-        <Leis />
-        <Solucao />
-        <Oferta />
-        <Garantia />
-        <ProvaSocial />
-        <ParaQuem />
-        <FAQ />
-        <CTAFinal />
+        <Suspense fallback={null}>
+          <BelowFold />
+        </Suspense>
       </main>
 
       <Footer />

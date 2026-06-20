@@ -12,6 +12,8 @@
     "check:cenarios": "node scripts/check-cenarios.mjs"
   },
   "dependencies": {
+    "@fontsource/dm-sans": "^5.2.8",
+    "@fontsource/oswald": "^5.2.8",
     "@react-three/drei": "^9.114.3",
     "@react-three/fiber": "^8.17.10",
     "framer-motion": "^11.15.0",
