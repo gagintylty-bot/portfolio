@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-fundo: #0a0a12;
+  --color-painel: #12121e;
+  --color-borda: #26263a;
+  --color-acento: #8b5cf6;
+  --color-acento-2: #22d3ee;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-fundo);
+  color: #e7e7f0;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* pulso do botão de gravação */
+@keyframes pulso {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(239 68 68 / 0.5); }
+  50% { box-shadow: 0 0 0 12px rgb(239 68 68 / 0); }
+}
+.gravando {
+  animation: pulso 1.4s ease-in-out infinite;
+}
