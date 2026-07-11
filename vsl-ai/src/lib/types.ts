@@ -1,49 +1,36 @@
-/** Estilo narrativo da VSL — muda copy, paleta, trilha de SFX e ritmo. */
-export type Estilo = 'urgencia' | 'premium' | 'educativo' | 'energetico'
+export type Estilo = 'agressivo' | 'premium' | 'tech'
+export type DuracaoPreset = 15 | 30 | 45
+export type SfxNome = 'whoosh' | 'impacto' | 'riser' | 'caixa' | 'clique' | 'brilho'
+export type EntradaTipo = 'stamp' | 'slide' | 'zoom' | 'blur-settle'
+export type TransicaoTipo = 'wipe' | 'zoom-through' | 'flash' | 'match-cut'
+export type CameraMove = 'dolly-in' | 'orbit' | 'punch-in' | 'hold'
 
-/** Proporção do vídeo final. */
-export type Formato = '16:9' | '9:16'
-
-/** O que o usuário conta pra IA (por texto ou áudio transcrito). */
-export interface Briefing {
-  produto: string
-  descricao: string
-  publico: string
-  oferta: string
-  exemplos: string
+export interface VideoConfig {
+  texto: string
   estilo: Estilo
-  formato: Formato
+  duracaoSeg: DuracaoPreset
+  cta: string
 }
 
-export type SfxNome = 'whoosh' | 'impacto' | 'riser' | 'caixa' | 'clique' | 'brilho'
-
-export type Forma3D = 'cubo' | 'piramide' | 'anel' | 'icosaedro'
-
-/** Uma cena do vídeo: um beat do roteiro clássico de VSL. */
-export interface Cena {
+export interface BeatEntry {
   id: string
-  /** Nome do beat (Hook, Problema, Solução…) — aparece na timeline do estúdio. */
-  beat: string
-  /** Texto narrado pela voz escolhida. */
-  narracao: string
-  /** Frase curta que domina a tela (tipografia cinética). */
-  titulo: string
-  /** Palavras destacadas na cor de acento. */
+  beatNome: string
+  frase: string
+  tituloVisual: string
   destaques: string[]
-  /** Itens de lista (benefícios, provas) exibidos um a um. Opcional. */
   bullets?: string[]
   sfx: SfxNome
-  forma: Forma3D
-  /** Matiz base da cena (0–360) — o renderer anima em torno dela. */
+  entrada: EntradaTipo
+  transicao: TransicaoTipo
+  camera: CameraMove
   matiz: number
-  /** Duração mínima em ms quando não há narração pra sincronizar. */
   duracaoMs: number
 }
 
-export interface Roteiro {
-  cenas: Cena[]
-  /** Aviso quando o briefing veio vago — a IA preenche, mas sinaliza. */
-  observacoes: string[]
+export interface BeatMap {
+  beats: BeatEntry[]
+  estilo: Estilo
+  totalMs: number
 }
 
 export interface VozOpcao {
@@ -53,6 +40,6 @@ export interface VozOpcao {
 }
 
 export interface AjusteVoz {
-  taxa: number // 0.5–2
-  tom: number // 0–2
+  taxa: number
+  tom: number
 }
